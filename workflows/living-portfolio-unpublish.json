@@ -1,0 +1,195 @@
+{
+  "name": "Living Portfolio - Unpublish",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "5153029b-27b0-4b10-994a-57c7a59dcc83",
+              "leftValue": "={{ $json.wordpressId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        -112,
+        48
+      ],
+      "id": "0a889599-85f3-4fa1-a449-76b1571d7672",
+      "name": "Is Page Saved"
+    },
+    {
+      "parameters": {
+        "resource": "page",
+        "operation": "update",
+        "pageId": "={{ $json.wordpressId }}",
+        "updateFields": {
+          "status": "draft"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        112,
+        -112
+      ],
+      "id": "36becfd5-ec57-4c36-a930-3189b902f6e5",
+      "name": "Hide WordPress Page",
+      "credentials": {
+        "wordpressApi": {
+          "name": "Wordpress account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "31ead555-7f01-4c41-80ab-43a8b68b5664",
+              "name": "workflowId",
+              "value": "={{ $('Receive Project Details').first().json.workflowId }}",
+              "type": "string"
+            },
+            {
+              "id": "96f13c05-83a8-4cb5-a2ab-9a1c513677f1",
+              "name": "wordpressId",
+              "value": "={{ $('Receive Project Details').first().json.wordpressId }}",
+              "type": "string"
+            },
+            {
+              "id": "c9e011fa-f499-48a6-9aab-08abbf1d715c",
+              "name": "name",
+              "value": "={{ $('Receive Project Details').first().json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "6de98747-8eef-4fe2-8cd1-932497ac0069",
+              "name": "lastUpdatedAt",
+              "value": "={{ $('Receive Project Details').first().json.lastUpdatedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "4277fe0c-fb86-4b53-baf3-b2324ab936e2",
+              "name": "status",
+              "value": "unpublished",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        64
+      ],
+      "id": "5031e6a0-736e-4521-a91f-2a7c41fbe883",
+      "name": "Build Unpublished Result"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "workflowId"
+            },
+            {
+              "name": "wordpressId"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "lastUpdatedAt"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -336,
+        48
+      ],
+      "id": "8d114f58-facb-45ce-88cd-001ab0b971fc",
+      "name": "Receive Project Details"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Is Page Saved": {
+      "main": [
+        [
+          {
+            "node": "Hide WordPress Page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Unpublished Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receive Project Details": {
+      "main": [
+        [
+          {
+            "node": "Is Page Saved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hide WordPress Page": {
+      "main": [
+        [
+          {
+            "node": "Build Unpublished Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "C9D5fDko5sYOnguc",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "nodeGroups": [],
+  "tags": [
+    {
+      "name": "Portfolio Part"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "name": "Utility - Notify Error",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "627ea909-1997-419b-9942-ea8e2f710470",
+      "name": "Receive Failure"
+    },
+    {
+      "parameters": {
+        "sendTo": "you@example.com",
+        "subject": "={{ 'Failed: ' + $json.workflow.name }}",
+        "emailType": "text",
+        "message": "=Workflow: {{ $json.workflow.name }}\nFailed node: {{ $json.execution.lastNodeExecuted }}\nMessage: {{ $json.execution.error.message }}\nOpen the run: {{ $json.execution.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        0
+      ],
+      "id": "c08869eb-d49c-49d0-8f01-f94f7ee1fbcb",
+      "name": "Send Failure Email",
+      "credentials": {
+        "gmailOAuth2": {
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Receive Failure": {
+      "main": [
+        [
+          {
+            "node": "Send Failure Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "nodeGroups": [],
+  "tags": []
+}

@@ -1,0 +1,1056 @@
+{
+  "name": "Living Portfolio - Sync",
+  "nodes": [
+    {
+      "parameters": {
+        "filters": {
+          "tags": "Portfolio"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        224,
+        -48
+      ],
+      "id": "cc3e0736-edf1-4485-9078-0cb179615ca6",
+      "name": "Get Portfolio Workflows",
+      "credentials": {
+        "n8nApi": {
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        432
+      ],
+      "id": "b0e33bca-314c-4b86-b4cf-5f0262af67a2",
+      "name": "REMOVE"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        -144
+      ],
+      "id": "4ee0c014-d7d8-4cfd-a184-4f8be74a5fed",
+      "name": "NEW"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        240
+      ],
+      "id": "ff82f9f2-37c9-4573-b2e6-78b55efd8906",
+      "name": "UPDATE"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        48
+      ],
+      "id": "504727cb-3d4b-4bc0-985e-1f5489ce9004",
+      "name": "KEEP"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9b00fbb9-7181-48e3-bb7c-e69830a562ea",
+              "name": "workflowId",
+              "value": "={{ $json.workflowId }}",
+              "type": "string"
+            },
+            {
+              "id": "d13d23d1-f90c-4ee1-9246-2264964b5de3",
+              "name": "lastUpdatedAt",
+              "value": "={{ $json.lastUpdatedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "3174b165-a2b1-4063-992d-47d3cc4b79ee",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "78e64a73-3af4-429e-923d-fbeadbc165f1",
+              "name": "wordpressId",
+              "value": "={{ $json.wordpressId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        672,
+        336
+      ],
+      "id": "df665a36-aaa0-4288-a4aa-143e502c97c1",
+      "name": "Prepare Table Rows"
+    },
+    {
+      "parameters": {
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "workflowId",
+              "field2": "workflowId"
+            }
+          ]
+        },
+        "resolve": "mix",
+        "exceptWhenMix": "wordpressId",
+        "options": {
+          "skipFields": "wordpressId,partIds"
+        }
+      },
+      "type": "n8n-nodes-base.compareDatasets",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        112
+      ],
+      "id": "14625100-1808-4935-a3dd-f2d0f1fda809",
+      "name": "Compare Live vs Table"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "RT23SC13uSN3165z",
+          "mode": "list",
+          "cachedResultName": "Living Portfolio - Process Project"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflowId": "={{ $json.workflowId }}",
+            "wordpressId": "={{ $json.wordpressId }}",
+            "name": "={{ $json.name }}",
+            "lastUpdatedAt": "={{ $json.lastUpdatedAt }}",
+            "partIds": "={{ $json.partIds }}"
+          },
+          "matchingColumns": [
+            "workflowId"
+          ],
+          "schema": [
+            {
+              "id": "workflowId",
+              "displayName": "workflowId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "wordpressId",
+              "displayName": "wordpressId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "partIds",
+              "displayName": "partIds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        1344,
+        -144
+      ],
+      "id": "e035a2e8-d651-4b7f-bdbf-eea322246e54",
+      "name": "Create Project Page",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "RT23SC13uSN3165z",
+          "mode": "list",
+          "cachedResultName": "Living Portfolio - Process Project"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflowId": "={{ $json.workflowId }}",
+            "wordpressId": "={{ $json.wordpressId }}",
+            "name": "={{ $json.name }}",
+            "lastUpdatedAt": "={{ $json.lastUpdatedAt }}",
+            "partIds": "={{ $json.partIds }}"
+          },
+          "matchingColumns": [
+            "workflowId"
+          ],
+          "schema": [
+            {
+              "id": "workflowId",
+              "displayName": "workflowId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "wordpressId",
+              "displayName": "wordpressId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "partIds",
+              "displayName": "partIds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        1344,
+        240
+      ],
+      "id": "733982be-0561-4ccf-b5b0-636a994544c6",
+      "name": "Update Project Page",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "reAnCEs7tWc9G5VP",
+          "mode": "list",
+          "cachedResultName": "Living Portfolio - Unpublish"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflowId": "={{ $json.workflowId }}",
+            "wordpressId": "={{ $json.wordpressId }}",
+            "name": "={{ $json.name }}",
+            "lastUpdatedAt": "={{ $json.lastUpdatedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflowId",
+              "displayName": "workflowId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "wordpressId",
+              "displayName": "wordpressId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        1344,
+        432
+      ],
+      "id": "01236b9d-8927-4847-85cb-e4069cf11e8c",
+      "name": "Unpublish Project Page",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "iKWIUgIUp5LB98GP",
+          "mode": "list",
+          "cachedResultName": "Living Portfolio Publicated Workflows"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "workflowId",
+              "keyValue": "={{ $json.workflowId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lastUpdatedAt": "={{ $json.lastUpdatedAt }}",
+            "name": "={{ $json.name }}",
+            "status": "={{ $json.status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflowId",
+              "displayName": "workflowId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "wordpressId",
+              "displayName": "wordpressId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        240
+      ],
+      "id": "ec5373f6-3998-4e25-b0fd-ffeed4d3920b",
+      "name": "Update Row"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "iKWIUgIUp5LB98GP",
+          "mode": "list",
+          "cachedResultName": "Living Portfolio Publicated Workflows"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "workflowId",
+              "keyValue": "={{ $json.workflowId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "={{ $json.status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflowId",
+              "displayName": "workflowId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "wordpressId",
+              "displayName": "wordpressId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        432
+      ],
+      "id": "3cce8fdb-c907-4be9-a86d-1e29d1dd3762",
+      "name": "Mark Row Unpublished"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "iKWIUgIUp5LB98GP",
+          "mode": "list",
+          "cachedResultName": "Living Portfolio Publicated Workflows"
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        336
+      ],
+      "id": "ed54b5c6-d6a3-432a-b6e8-66c8dd337879",
+      "name": "Get Table Rows",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "content": "## Living Portfolio - Sync\n\nKeeps the portfolio in step with n8n.\n\n1. Lists every workflow tagged Portfolio.\n2. Finds each one's family: the sub-workflows it calls that are tagged Portfolio Part.\n3. Compares them with the table of published projects.\n4. Sends every new, changed or removed project to its own workflow. Process Project writes and publishes the page. Unpublish hides it.\n5. Saves the result in the table.\n\nNo human step. If one project fails, it is skipped and tried again on the next run, and the error workflow sends an email.",
+        "height": 288,
+        "width": 1088,
+        "color": "#136B81"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        -432
+      ],
+      "id": "8c6525d5-5875-4a24-a7dd-021b7b04b00e",
+      "name": "Summary"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "5bb9cd2f-7d92-48c8-bdd8-0bd3bc670662",
+              "leftValue": "={{ $json.workflowId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "a2ebea98-3a86-4bfb-9dc6-951cce3dad35",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "unpublished",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.4,
+      "position": [
+        448,
+        336
+      ],
+      "id": "b2dd8818-e678-431c-88d1-2ea3cc4e6173",
+      "name": "Keep Tracked Rows"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "iKWIUgIUp5LB98GP",
+          "mode": "list",
+          "cachedResultName": "Living Portfolio Publicated Workflows"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "workflowId",
+              "keyValue": "={{ $json.workflowId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflowId": "={{ $json.workflowId }}",
+            "status": "={{ $json.status }}",
+            "lastUpdatedAt": "={{ $json.lastUpdatedAt }}",
+            "wordpressId": "={{ $json.wordpressId }}",
+            "name": "={{ $json.name }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflowId",
+              "displayName": "workflowId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "wordpressId",
+              "displayName": "wordpressId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        -144
+      ],
+      "id": "63676eae-0f4f-4f5d-82a0-faa8e3996d6a",
+      "name": "Save Row"
+    },
+    {
+      "parameters": {
+        "filters": {
+          "tags": "Portfolio Part"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        224,
+        144
+      ],
+      "id": "bce516db-da3b-41b8-a681-cc226ba1190f",
+      "name": "Get Part Workflows",
+      "alwaysOutputData": true,
+      "credentials": {
+        "n8nApi": {
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        448,
+        48
+      ],
+      "id": "7c9a450c-9759-4e4d-967f-e12a7b2db350",
+      "name": "Combine Workflow List"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Find Workflow Families\n// Mode: Run Once for All Items\n// Input: the workflows tagged \"Portfolio\" AND the workflows tagged \"Portfolio Part\",\n//        as one list (the output of Combine Workflow Lists).\n//\n// For every project (tagged \"Portfolio\") this finds its family: the sub-workflows it\n// calls, directly or through other sub-workflows, that are tagged \"Portfolio Part\".\n// It also finds the newest update date in the family, so editing a sub-workflow\n// makes the project count as changed.\n//\n// Rule of this node: a sub-workflow is only followed if it is tagged \"Portfolio Part\".\n// An untagged sub-workflow is never opened and never listed.\n// Only five plain values leave this node. Nothing else from the workflows is passed on.\n\nconst PROJECT_TAG = 'Portfolio';\nconst PART_TAG = 'Portfolio Part';\nconst MAX_DEPTH = 3; // a project, its parts, their parts, and their parts\nconst EXECUTE_WORKFLOW_TYPE = 'n8n-nodes-base.executeWorkflow';\n\nfunction hasTag(workflow, tagName) {\n  for (const tag of workflow.tags || []) {\n    const name = typeof tag === 'string' ? tag : tag && tag.name;\n    if (name === tagName) {\n      return true;\n    }\n  }\n  return false;\n}\n\n// Reads the identifier of the workflow that an \"Execute Workflow\" node calls.\n// Returns an empty text when it cannot be known for sure (for example, when it is\n// calculated by an expression, or loaded from a file or a web address).\nfunction readCalledWorkflowId(node) {\n  const params = node.parameters || {};\n\n  if (params.source !== undefined && params.source !== 'database') {\n    return '';\n  }\n\n  let value = params.workflowId;\n  if (value && typeof value === 'object') {\n    value = value.value;\n  }\n  if (typeof value !== 'string' || value === '' || value.startsWith('=')) {\n    return '';\n  }\n  return value;\n}\n\nfunction findCalledWorkflowIds(workflow) {\n  const ids = [];\n  for (const node of workflow.nodes || []) {\n    if (node.type !== EXECUTE_WORKFLOW_TYPE) {\n      continue;\n    }\n    const calledId = readCalledWorkflowId(node);\n    if (calledId !== '' && !ids.includes(calledId)) {\n      ids.push(calledId);\n    }\n  }\n  return ids;\n}\n\nfunction toTime(text) {\n  const time = new Date(text).getTime();\n  if (Number.isNaN(time)) {\n    return 0;\n  }\n  return time;\n}\n\n// 1. Put every workflow in a lookup by identifier (the same workflow can arrive twice)\nconst workflowsById = {};\nfor (const item of $input.all()) {\n  const workflow = item.json;\n  if (typeof workflow.id === 'string' && workflow.id !== '') {\n    workflowsById[workflow.id] = workflow;\n  }\n}\n\n// 2. For every project, walk through its family\nconst results = [];\nfor (const workflow of Object.values(workflowsById)) {\n  if (!hasTag(workflow, PROJECT_TAG)) {\n    continue;\n  }\n\n  const partIds = [];\n  const visited = {};\n  visited[workflow.id] = true;\n\n  let newestText = workflow.updatedAt;\n  let newestTime = toTime(workflow.updatedAt);\n\n  // Each round looks at one level of the family\n  let currentLevel = [workflow];\n  for (let depth = 1; depth <= MAX_DEPTH; depth++) {\n    const nextLevel = [];\n\n    for (const parent of currentLevel) {\n      for (const childId of findCalledWorkflowIds(parent)) {\n        const child = workflowsById[childId];\n        if (visited[childId] === true || !child || !hasTag(child, PART_TAG)) {\n          continue;\n        }\n        visited[childId] = true;\n        partIds.push(childId);\n        nextLevel.push(child);\n\n        if (toTime(child.updatedAt) > newestTime) {\n          newestTime = toTime(child.updatedAt);\n          newestText = child.updatedAt;\n        }\n      }\n    }\n\n    currentLevel = nextLevel;\n  }\n\n  results.push({\n    json: {\n      workflowId: workflow.id,\n      name: workflow.name,\n      lastUpdatedAt: newestText,\n      wordpressId: '',\n      partIds: partIds.join(',')\n    }\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        48
+      ],
+      "id": "46a44a0f-4b73-43ab-ae61-f6344235e4bb",
+      "name": "Find Workflow Families"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -48,
+        336
+      ],
+      "id": "8da9693e-0b42-453c-9357-70ea2618933c",
+      "name": "Start Every Six Hours"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -32
+      ],
+      "id": "56a77609-18fc-4fab-8c25-4d3f6a742617",
+      "name": "Start Manually"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Portfolio Workflows": {
+      "main": [
+        [
+          {
+            "node": "Combine Workflow List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NEW": {
+      "main": [
+        [
+          {
+            "node": "Create Project Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "KEEP": {
+      "main": [
+        []
+      ]
+    },
+    "UPDATE": {
+      "main": [
+        [
+          {
+            "node": "Update Project Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "REMOVE": {
+      "main": [
+        [
+          {
+            "node": "Unpublish Project Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Table Rows": {
+      "main": [
+        [
+          {
+            "node": "Compare Live vs Table",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Compare Live vs Table": {
+      "main": [
+        [
+          {
+            "node": "NEW",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "KEEP",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "UPDATE",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "REMOVE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Project Page": {
+      "main": [
+        [
+          {
+            "node": "Save Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Project Page": {
+      "main": [
+        [
+          {
+            "node": "Update Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unpublish Project Page": {
+      "main": [
+        [
+          {
+            "node": "Mark Row Unpublished",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Table Rows": {
+      "main": [
+        [
+          {
+            "node": "Keep Tracked Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keep Tracked Rows": {
+      "main": [
+        [
+          {
+            "node": "Prepare Table Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Part Workflows": {
+      "main": [
+        [
+          {
+            "node": "Combine Workflow List",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Combine Workflow List": {
+      "main": [
+        [
+          {
+            "node": "Find Workflow Families",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Workflow Families": {
+      "main": [
+        [
+          {
+            "node": "Compare Live vs Table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Every Six Hours": {
+      "main": [
+        [
+          {
+            "node": "Get Portfolio Workflows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Part Workflows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Table Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Manually": {
+      "main": [
+        [
+          {
+            "node": "Get Portfolio Workflows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Part Workflows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Table Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "C9D5fDko5sYOnguc",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "nodeGroups": [],
+  "tags": [
+    {
+      "name": "Portfolio"
+    }
+  ]
+}
