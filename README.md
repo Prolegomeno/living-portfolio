@@ -54,6 +54,16 @@ Sync runs every 6 hours. You can also start it by hand.
 8. In `Choose Page Action`, `PAGE_STATUS` starts as `publish`. Set it to `draft` while you are testing.
 9. Tag one workflow `Portfolio` and run Sync by hand.
 
+## Linking a project to its code
+
+To add a "Get the code" link to a project page, put one plain line in a sticky note of the project's main workflow:
+
+```
+GitHub: https://github.com/your-name/repository-name
+```
+
+Only that exact shape is accepted: `https://github.com/` followed by a name and a repository. Anything else is ignored. A project without the line simply has no link, and the tag is still the only thing a workflow needs.
+
 ## Good to know
 
 - The diagrams use the public n8n-demo component, loaded from jsDelivr.

@@ -585,7 +585,7 @@
     },
     {
       "parameters": {
-        "content": "## Living Portfolio - Sync\n\nKeeps the portfolio in step with n8n.\n\n1. Lists every workflow tagged Portfolio.\n2. Finds each one's family: the sub-workflows it calls that are tagged Portfolio Part.\n3. Compares them with the table of published projects.\n4. Sends every new, changed or removed project to its own workflow. Process Project writes and publishes the page. Unpublish hides it.\n5. Saves the result in the table.\n\nNo human step. If one project fails, it is skipped and tried again on the next run, and the error workflow sends an email.",
+        "content": "## Living Portfolio - Sync\n\nGitHub: https://github.com/Prolegomeno/living-portfolio\n\nKeeps the portfolio in step with n8n.\n\n1. Lists every workflow tagged Portfolio.\n2. Finds each one's family: the sub-workflows it calls that are tagged Portfolio Part.\n3. Compares them with the table of published projects.\n4. Sends every new, changed or removed project to its own workflow. Process Project writes and publishes the page. Unpublish hides it.\n5. Saves the result in the table.\n\nNo human step. If one project fails, it is skipped and tried again on the next run, and the error workflow sends an email.",
         "height": 288,
         "width": 1088,
         "color": "#136B81"
